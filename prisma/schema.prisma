@@ -1,0 +1,229 @@
+generator client {
+  provider = "prisma-client"
+  output   = "../app/generated/prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+enum Role {
+  ADMINISTRATOR
+  PELATIH
+}
+
+enum StudentStatus {
+  AKTIF
+  NONAKTIF
+}
+
+enum DocumentStatus {
+  BELUM_LENGKAP
+  TERVERIFIKASI
+}
+
+enum AgeGroupStatus {
+  AKTIF
+  NONAKTIF
+}
+
+enum AttendanceStatus {
+  HADIR
+  ALPA
+}
+
+enum ReportStatus {
+  DRAFT
+  FINAL
+}
+
+enum Position {
+  KIPER
+  BELAKANG
+  TENGAH
+  DEPAN
+}
+
+model User {
+  id        Int       @id @default(autoincrement())
+  username  String    @unique
+  email     String    @unique
+  password  String
+  role      Role
+  phone     String?
+  sessions  Session[]
+  coach     Coach?
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+}
+
+model Session {
+  id        Int      @id @default(autoincrement())
+  userId    Int
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  ipAddress String?
+  userAgent String?
+  expiredAt DateTime
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+model Coach {
+  id           Int               @id @default(autoincrement())
+  userId       Int               @unique
+  user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  placeOfBirth String?
+  dateOfBirth  DateTime?         @db.Date
+  address      String?           @db.Text
+  license      String?
+  trainingSessions TrainingSession[]
+  reportCards      ReportCard[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+}
+
+model Student {
+  nis          String            @id
+  name         String
+  placeOfBirth String?
+  dateOfBirth  DateTime?         @db.Date
+  address      String?           @db.Text
+  joinDate     DateTime?         @db.Date
+  status       StudentStatus     @default(AKTIF)
+  profilePhoto String?
+  parentName   String?
+  phone        String?
+  position     Position?
+  ageGroupId   Int?
+  ageGroup     AgeGroup?         @relation(fields: [ageGroupId], references: [id], onDelete: Restrict)
+  documents    StudentDocument[]
+  attendances  Attendance[]
+  reportCards  ReportCard[]
+  createdAt    DateTime          @default(now())
+  updatedAt    DateTime          @updatedAt
+
+  @@index([ageGroupId])
+}
+
+model StudentDocument {
+  id                  Int            @id @default(autoincrement())
+  nis                 String
+  student             Student        @relation(fields: [nis], references: [nis], onDelete: Cascade)
+  registrationForm    String?
+  familyCard          String?
+  birthCertificate    String?
+  pasPhoto            String?
+  status              DocumentStatus @default(BELUM_LENGKAP)
+  notes               String?        @db.Text
+  createdAt           DateTime       @default(now())
+  updatedAt           DateTime       @updatedAt
+
+  @@index([nis])
+}
+
+model AgeGroup {
+  id               Int               @id @default(autoincrement())
+  name             String            @unique
+  status           AgeGroupStatus    @default(AKTIF)
+  notes            String?           @db.Text
+  students         Student[]
+  trainingSessions TrainingSession[]
+  reportCards      ReportCard[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model Academic {
+  id               Int               @id @default(autoincrement())
+  name             String
+  periodeStart     DateTime          @db.Date
+  periodeEnd       DateTime          @db.Date
+  isActive         Boolean           @default(false)
+  trainingSessions TrainingSession[]
+  reportCards      ReportCard[]
+  createdAt        DateTime          @default(now())
+  updatedAt        DateTime          @updatedAt
+}
+
+model TrainingSession {
+  id          Int          @id @default(autoincrement())
+  ageGroupId  Int
+  academicId  Int
+  coachId     Int
+  date        DateTime     @db.Date
+  ageGroup    AgeGroup     @relation(fields: [ageGroupId], references: [id], onDelete: Restrict)
+  academic    Academic     @relation(fields: [academicId], references: [id], onDelete: Restrict)
+  coach       Coach        @relation(fields: [coachId], references: [id], onDelete: Restrict)
+  attendances Attendance[]
+  createdAt   DateTime     @default(now())
+  updatedAt   DateTime     @updatedAt
+
+  @@index([ageGroupId])
+  @@index([academicId])
+  @@index([coachId])
+  @@index([date])
+}
+
+model Attendance {
+  id                Int              @id @default(autoincrement())
+  trainingSessionId Int
+  nis               String
+  status            AttendanceStatus
+  trainingSession   TrainingSession  @relation(fields: [trainingSessionId], references: [id], onDelete: Cascade)
+  student           Student          @relation(fields: [nis], references: [nis], onDelete: Restrict)
+  createdAt         DateTime         @default(now())
+  updatedAt         DateTime         @updatedAt
+
+  @@unique([trainingSessionId, nis])
+  @@index([nis])
+}
+
+model ReportCard {
+  id          Int                @id @default(autoincrement())
+  nis         String
+  ageGroupId  Int
+  academicId  Int
+  coachId     Int
+  totalScore  Decimal?           @db.Decimal(5, 2)
+  notes       String?            @db.Text
+  status      ReportStatus       @default(DRAFT)
+  generatedAt DateTime?
+  student     Student            @relation(fields: [nis], references: [nis], onDelete: Restrict)
+  ageGroup    AgeGroup           @relation(fields: [ageGroupId], references: [id], onDelete: Restrict)
+  academic    Academic           @relation(fields: [academicId], references: [id], onDelete: Restrict)
+  coach       Coach              @relation(fields: [coachId], references: [id], onDelete: Restrict)
+  details     ReportCardDetail[]
+  createdAt   DateTime           @default(now())
+  updatedAt   DateTime           @updatedAt
+
+  @@unique([nis, academicId])
+  @@index([ageGroupId])
+  @@index([academicId])
+  @@index([coachId])
+}
+
+model ReportCardDetail {
+  id                 Int              @id @default(autoincrement())
+  reportCardId       Int
+  assessmentAspectId Int
+  score              Decimal?         @db.Decimal(5, 2)
+  notes              String?          @db.Text
+  reportCard         ReportCard       @relation(fields: [reportCardId], references: [id], onDelete: Cascade)
+  assessmentAspect   AssessmentAspect @relation(fields: [assessmentAspectId], references: [id], onDelete: Restrict)
+  createdAt          DateTime         @default(now())
+  updatedAt          DateTime         @updatedAt
+
+  @@unique([reportCardId, assessmentAspectId])
+  @@index([assessmentAspectId])
+}
+
+model AssessmentAspect {
+  id         Int                @id @default(autoincrement())
+  name       String
+  maxScore   Int
+  category   String
+  details    ReportCardDetail[]
+  createdAt  DateTime           @default(now())
+  updatedAt  DateTime           @updatedAt
+}
