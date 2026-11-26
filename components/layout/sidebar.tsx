@@ -10,7 +10,7 @@ import {
   ClipboardCheck,
   FileSpreadsheet,
   User,
-  Numbers,
+  Hash,
 } from "lucide-react";
 
 interface SidebarProps {
@@ -44,7 +44,7 @@ export function Sidebar({
     {
       title: "Kelas Usia",
       href: "/admin/classes",
-      icon: Numbers,
+      icon: Hash,
     },
     {
       title: "Tahun Akademik",
@@ -82,7 +82,7 @@ export function Sidebar({
   return (
     <>
       {/* SIDEBAR*/}
-      <aside className="hidden lg:flex w-[274px] shrink-0 min-h-screen bg-[#172720] flex-col py-8 px-5 border-r border-[#23372d] text-white sticky top-0 h-screen overflow-y-auto">
+      <aside className="hidden lg:flex w-[255px] shrink-0 min-h-screen bg-[#172720] flex-col py-8 px-5 border-r border-[#23372d] text-white sticky top-0 h-screen overflow-y-auto">
         {/* Top Branding Section */}
         <div>
           <div className="flex flex-col items-center text-center">
@@ -90,21 +90,21 @@ export function Sidebar({
             <Image
               src="/logo/logossb.webp"
               alt="Logo SSB Mundinglaya"
-              width={75}
-              height={75}
+              width={65}
+              height={65}
               priority
               className="object-contain"
             />
-            <h2 className="text-[18px] mt-1 font-semibold tracking-wide text-white w-full max-w-[210px] leading-tight">
+            <h2 className="text-[16px] mt-1 font-bold tracking-wide text-white w-full max-w-[210px] leading-tight">
               SSB MUNDINGLAYA
             </h2>
-            <p className="text-[11px] mt-1 font-medium text-[#bdc8bf]">
-              Tahun Ajaran {academicYear}
+            <p className="text-[11px] mt-0.5 font-medium text-[#bdc8bf]">
+              Tahun Akademik {academicYear}
             </p>
           </div>
 
           {/* Navigation Items */}
-          <nav className="mt-10 space-y-1.5">
+          <nav className="mt-8 space-y-1.5">
             {navItems.map((item) => {
               const isActive = item.exact
                 ? pathname === item.href
@@ -116,9 +116,9 @@ export function Sidebar({
                 <Link
                   key={item.href}
                   href={item.href}
-                  className={`group flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-150 ${
+                  className={`group flex items-center gap-3 px-3.5 py-2.5 rounded-lg transition-all duration-150 ${
                     isActive
-                      ? "text-white"
+                      ? "text-white font-medium bg-[#23372d]"
                       : "text-[#aebbb0] hover:text-white hover:bg-white/[0.04]"
                   }`}
                 >

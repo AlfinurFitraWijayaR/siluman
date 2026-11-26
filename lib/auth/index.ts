@@ -1,10 +1,10 @@
 import { SignJWT, jwtVerify } from "jose";
 import bcrypt from "bcryptjs";
+import { Role } from "../../generated/prisma/enums";
 import { cookies } from "next/headers";
-import { Role } from "../../app/generated/prisma/enums";
 
 const SECRET_KEY = new TextEncoder().encode(process.env.JWT_SECRET);
-export const AUTH_COOKIE_NAME = "siluman_session";
+const AUTH_COOKIE_NAME = "siluman_session";
 
 export interface SessionPayload {
   userId: number;

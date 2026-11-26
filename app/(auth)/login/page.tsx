@@ -72,7 +72,13 @@ export default function LoginPage() {
         {/* Form Container */}
         <div className="mx-auto w-full max-w-[400px] my-auto py-8">
           <div className="mb-6 flex justify-center">
-            <Image src={"/logo/logo.svg"} height={350} width={350} alt="" />
+            <Image
+              src={"/logo/BL.svg"}
+              height={300}
+              width={300}
+              alt="Logo SILUMAN"
+              priority
+            />
           </div>
 
           <form action={formAction} className="space-y-5" autoComplete="on">
