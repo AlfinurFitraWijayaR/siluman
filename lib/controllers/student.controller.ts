@@ -30,6 +30,7 @@ export async function createStudentAction(
       joinDate: formData.get("joinDate")?.toString()?.trim() || null,
       status: (formData.get("status")?.toString() ||
         StudentStatus.AKTIF) as StudentStatus,
+      profilePhoto: formData.get("profilePhoto")?.toString() || null,
       parentName: formData.get("parentName")?.toString()?.trim() || null,
       phone: formData.get("phone")?.toString()?.trim() || null,
       position: (formData.get("position")?.toString() ||
@@ -81,6 +82,9 @@ export async function updateStudentAction(
       joinDate: formData.get("joinDate")?.toString()?.trim() || null,
       status: (formData.get("status")?.toString() ||
         StudentStatus.AKTIF) as StudentStatus,
+      profilePhoto: formData.has("profilePhoto")
+        ? formData.get("profilePhoto")?.toString() || null
+        : undefined,
       parentName: formData.get("parentName")?.toString()?.trim() || null,
       phone: formData.get("phone")?.toString()?.trim() || null,
       position: (formData.get("position")?.toString() ||

@@ -1,8 +1,8 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Loader2 } from "lucide-react";
+import { Loader2, Camera } from "lucide-react";
 import {
   updateStudentAction,
   verifyStudentDocumentsAction,
@@ -34,6 +34,7 @@ export interface StudentDetailData {
   address: string | null;
   joinDate: string | null;
   status: StudentStatus;
+  profilePhoto: string | null;
   parentName: string | null;
   phone: string | null;
   position: Position | null;
@@ -60,6 +61,10 @@ interface StudentDetailClientProps {
 
 export function StudentDetailClient({ student }: StudentDetailClientProps) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [photoPreview, setPhotoPreview] = useState<string | null>(
+    student.profilePhoto,
+  );
   const [isSubmittingBiodata, setIsSubmittingBiodata] = useState(false);
   const [isSubmittingDocs, setIsSubmittingDocs] = useState(false);
   const [successMessage, setSuccessMessage] = useState<string | null>(null);
@@ -106,6 +111,30 @@ export function StudentDetailClient({ student }: StudentDetailClientProps) {
   const [hasKK, setHasKK] = useState(Boolean(doc?.familyCard));
   const [hasPhoto, setHasPhoto] = useState(Boolean(doc?.pasPhoto));
 
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setErrorMessage(
+        "File yang diunggah harus berupa gambar (JPG, PNG, atau WebP).",
+      );
+      return;
+    }
+
+    if (file.size > 1 * 1024 * 1024) {
+      setErrorMessage("Ukuran gambar maksimal adalah 1MB.");
+      return;
+    }
+
+    setErrorMessage(null);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPhotoPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
   const handleUpdateBiodata = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmittingBiodata(true);
@@ -113,6 +142,9 @@ export function StudentDetailClient({ student }: StudentDetailClientProps) {
     setErrorMessage(null);
 
     const formData = new FormData(e.currentTarget);
+    if (photoPreview !== undefined) {
+      formData.set("profilePhoto", photoPreview || "");
+    }
     const res = await updateStudentAction(student.nis, null, formData);
     setIsSubmittingBiodata(false);
 
@@ -191,9 +223,35 @@ export function StudentDetailClient({ student }: StudentDetailClientProps) {
         <div className="bg-white/70 rounded-md border border-[#dedfd6] overflow-hidden flex flex-col justify-between">
           {/* Profil siswa */}
           <div className="p-6 flex flex-col items-center text-center">
-            <div className="w-28 h-28 rounded-full bg-[#f7f6f0] border border-[#dedfd6] flex items-center justify-center font-bold text-3xl text-[#172720] mb-2">
-              {student.name[0]?.toUpperCase()}
+            <div className="relative group w-28 h-28 rounded-full bg-[#f7f6f0] border border-[#dedfd6] flex items-center justify-center font-bold text-3xl text-[#172720] mb-2 overflow-hidden shadow-2xs">
+              {photoPreview ? (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={photoPreview}
+                  alt={student.name}
+                  className="w-full h-full object-cover"
+                />
+              ) : (
+                student.name[0]?.toUpperCase()
+              )}
+
+              <div
+                onClick={() => fileInputRef.current?.click()}
+                className="absolute inset-0 bg-black/45 text-white flex flex-col items-center justify-center gap-1 opacity-0 group-hover:opacity-100 transition-opacity cursor-pointer text-[11px]"
+              >
+                <Camera className="w-5 h-5" />
+                <span>{photoPreview ? "Ganti" : "Upload"}</span>
+              </div>
             </div>
+
+            {/* Hidden file input */}
+            <input
+              ref={fileInputRef}
+              type="file"
+              accept="image/png, image/jpeg, image/webp"
+              onChange={handlePhotoChange}
+              className="hidden"
+            />
 
             <h2 className="text-base font-semibold text-[#171717] capitalize">
               {student.name}
@@ -459,7 +517,7 @@ export function StudentDetailClient({ student }: StudentDetailClientProps) {
           onSubmit={handleUpdateDocuments}
           className="px-6 py-3 space-y-3.5 text-xs"
         >
-          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
             {/* Formulir Pendaftaran */}
             <div className="flex justify-center items-center flex-col space-y-1">
               <span className="text-[#555555] font-medium block">

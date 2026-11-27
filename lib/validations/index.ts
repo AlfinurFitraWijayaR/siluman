@@ -21,6 +21,7 @@ export const studentSchema = z.object({
   address: z.string().optional().nullable(),
   joinDate: z.string().optional().nullable(),
   status: z.nativeEnum(StudentStatus).default(StudentStatus.AKTIF),
+  profilePhoto: z.string().optional().nullable(),
   parentName: z.string().optional().nullable(),
   phone: z.string().optional().nullable(),
   position: z.nativeEnum(Position).optional().nullable(),

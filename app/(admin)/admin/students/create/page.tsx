@@ -20,7 +20,7 @@ export default async function AdminCreateStudentPage() {
           Tambah Siswa
         </h1>
       </div>
-      <CreateStudentClient ageGroups={ageGroups} />;
+      <CreateStudentClient ageGroups={ageGroups} />
     </div>
   );
 }

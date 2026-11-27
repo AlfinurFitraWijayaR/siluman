@@ -9,6 +9,7 @@ export interface StudentListItemDTO {
   nis: string;
   name: string;
   status: StudentStatus;
+  profilePhoto: string | null;
   ageGroup: {
     id: number;
     name: string;
@@ -28,6 +29,7 @@ export interface StudentDetailDTO {
   address: string | null;
   joinDate: string | null;
   status: StudentStatus;
+  profilePhoto: string | null;
   parentName: string | null;
   phone: string | null;
   position: Position | null;
@@ -55,6 +57,7 @@ export interface CreateStudentPayload {
   address?: string | null;
   joinDate?: string | null;
   status: StudentStatus;
+  profilePhoto?: string | null;
   parentName?: string | null;
   phone?: string | null;
   position?: Position | null;
@@ -71,6 +74,7 @@ export interface UpdateStudentPayload {
   address?: string | null;
   joinDate?: string | null;
   status: StudentStatus;
+  profilePhoto?: string | null;
   parentName?: string | null;
   phone?: string | null;
   position?: Position | null;
@@ -85,6 +89,7 @@ export class StudentService {
         nis: true,
         name: true,
         status: true,
+        profilePhoto: true,
         ageGroup: {
           select: {
             id: true,
@@ -108,6 +113,7 @@ export class StudentService {
       nis: st.nis,
       name: st.name,
       status: st.status,
+      profilePhoto: st.profilePhoto,
       ageGroup: st.ageGroup,
       documents: st.documents,
     }));
@@ -150,6 +156,7 @@ export class StudentService {
       address: rawStudent.address,
       joinDate: rawStudent.joinDate ? rawStudent.joinDate.toISOString() : null,
       status: rawStudent.status,
+      profilePhoto: rawStudent.profilePhoto,
       parentName: rawStudent.parentName,
       phone: rawStudent.phone,
       position: rawStudent.position,
@@ -207,6 +214,7 @@ export class StudentService {
         address: data.address,
         joinDate: data.joinDate ? new Date(data.joinDate) : new Date(),
         status: data.status,
+        profilePhoto: data.profilePhoto || null,
         parentName: data.parentName,
         phone: data.phone,
         position: data.position,
@@ -223,7 +231,8 @@ export class StudentService {
 
   // update siswa.
   static async updateStudent(currentNis: string, data: UpdateStudentPayload) {
-    const targetNis = data.nis && data.nis.trim() ? data.nis.trim() : currentNis;
+    const targetNis =
+      data.nis && data.nis.trim() ? data.nis.trim() : currentNis;
 
     // Jika NIS berubah, lakukan transaksi dengan memperbarui relasi
     if (targetNis !== currentNis) {
@@ -245,6 +254,8 @@ export class StudentService {
             address: data.address,
             joinDate: data.joinDate ? new Date(data.joinDate) : new Date(),
             status: data.status,
+            profilePhoto:
+              data.profilePhoto !== undefined ? data.profilePhoto : undefined,
             parentName: data.parentName,
             phone: data.phone,
             position: data.position,
@@ -286,6 +297,8 @@ export class StudentService {
         address: data.address,
         joinDate: data.joinDate ? new Date(data.joinDate) : undefined,
         status: data.status,
+        profilePhoto:
+          data.profilePhoto !== undefined ? data.profilePhoto : undefined,
         parentName: data.parentName,
         phone: data.phone,
         position: data.position,

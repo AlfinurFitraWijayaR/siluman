@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { createStudentAction, getNextNISAction } from "@/lib/actions/students";
 import { Position } from "@/generated/prisma/enums";
@@ -16,6 +16,7 @@ import {
 } from "../ui/select";
 import { Button } from "../ui/button";
 import { Badge } from "../ui/badge";
+import { X } from "lucide-react";
 
 interface CreateStudentClientProps {
   ageGroups: { id: number; name: string }[];
@@ -27,6 +28,8 @@ export function CreateStudentClient({
   suggestedNIS: _initialNIS = "",
 }: CreateStudentClientProps) {
   const router = useRouter();
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
 
@@ -85,12 +88,48 @@ export function CreateStudentClient({
   );
   const [docPhoto, setDocPhoto] = useState<"ada" | "belum ada">("belum ada");
 
+  const handlePhotoChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+
+    if (!file.type.startsWith("image/")) {
+      setErrorMessage(
+        "File yang diunggah harus berupa gambar (JPG, PNG, atau WebP).",
+      );
+      return;
+    }
+
+    if (file.size > 1 * 1024 * 1024) {
+      setErrorMessage("Ukuran gambar maksimal adalah 1MB.");
+      return;
+    }
+
+    setErrorMessage(null);
+    const reader = new FileReader();
+    reader.onload = () => {
+      setPhotoPreview(reader.result as string);
+    };
+    reader.readAsDataURL(file);
+  };
+
+  const [photoPreview, setPhotoPreview] = useState<string | null>(null);
+
+  const handleRemovePhoto = () => {
+    setPhotoPreview(null);
+    if (fileInputRef.current) {
+      fileInputRef.current.value = "";
+    }
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsSubmitting(true);
     setErrorMessage(null);
 
     const formData = new FormData(e.currentTarget);
+    if (photoPreview) {
+      formData.set("profilePhoto", photoPreview);
+    }
     const allDocsReady =
       docRegistration === "ada" &&
       docBirthCert === "ada" &&
@@ -112,6 +151,7 @@ export function CreateStudentClient({
 
     const res = await createStudentAction(null, formData);
     setIsSubmitting(false);
+    console.log(res);
 
     if (res.success) {
       router.push("/admin/students");
@@ -142,10 +182,43 @@ export function CreateStudentClient({
             <div className="px-6 space-y-2">
               {/* NIS */}
               <input type="hidden" name="nis" value={nis} />
+
+              {/* PP */}
+              <div>
+                <label className="text-[#555555] block mb-1.5">
+                  Foto Profil (Opsional Max. 1MB)
+                </label>
+                <div className="flex items-center gap-4">
+                  <div className="space-y-1.5 w-full">
+                    <div className="flex items-center gap-2">
+                      <Input
+                        ref={fileInputRef}
+                        type="file"
+                        accept="image/png, image/jpeg, image/webp"
+                        onChange={handlePhotoChange}
+                        className="cursor-pointer"
+                      />
+                      {photoPreview && (
+                        <Button
+                          type="button"
+                          variant="destructive"
+                          size="sm"
+                          onClick={handleRemovePhoto}
+                          className="cursor-pointer"
+                        >
+                          <X className="w-3.5 h-3.5" />
+                          <span>Hapus</span>
+                        </Button>
+                      )}
+                    </div>
+                  </div>
+                </div>
+              </div>
+
               {/* Nama Lengkap & Alamat */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label htmlFor="name" className="text-[#8e988f] block mb-1">
+                  <label htmlFor="name" className="text-[#555555] block mb-1">
                     Nama Lengkap Siswa
                   </label>
                   <Input
@@ -159,7 +232,7 @@ export function CreateStudentClient({
                 <div>
                   <label
                     htmlFor="address"
-                    className="text-[#8e988f] block mb-1"
+                    className="text-[#555555] block mb-1"
                   >
                     Alamat Tinggal
                   </label>
@@ -178,7 +251,7 @@ export function CreateStudentClient({
                   <div>
                     <label
                       htmlFor="place"
-                      className="text-[#8e988f] block mb-1"
+                      className="text-[#555555] block mb-1"
                     >
                       Tempat
                     </label>
@@ -190,7 +263,7 @@ export function CreateStudentClient({
                     />
                   </div>
                   <div>
-                    <label htmlFor="date" className="text-[#8e988f] block mb-1">
+                    <label htmlFor="date" className="text-[#555555] block mb-1">
                       Tanggal Lahir
                     </label>
                     <Input
@@ -206,7 +279,7 @@ export function CreateStudentClient({
               {/* Ortu & No HP */}
               <div className="grid grid-cols-1 md:grid-cols-2 gap-5">
                 <div>
-                  <label htmlFor="parent" className="text-[#8e988f] block mb-1">
+                  <label htmlFor="parent" className="text-[#555555] block mb-1">
                     Nama Orang Tua (Opsional)
                   </label>
                   <Input
@@ -217,7 +290,7 @@ export function CreateStudentClient({
                   />
                 </div>
                 <div>
-                  <label htmlFor="phone" className="text-[#8e988f] block mb-1">
+                  <label htmlFor="phone" className="text-[#555555] block mb-1">
                     No. Telp / WhatsApp (Opsional)
                   </label>
                   <Input
@@ -245,7 +318,7 @@ export function CreateStudentClient({
                 <div>
                   <label
                     htmlFor="position"
-                    className="text-[#8e988f] block mb-1"
+                    className="text-[#555555] block mb-1"
                   >
                     Posisi Bermain
                   </label>
@@ -271,11 +344,18 @@ export function CreateStudentClient({
                 <div>
                   <label
                     htmlFor="ageGroup"
-                    className="text-[#8e988f] block mb-1"
+                    className="text-[#555555] block mb-1"
                   >
                     Kelas Usia
                   </label>
-                  <Select id="ageGroup" name="ageGroupId">
+                  <Select
+                    id="ageGroup"
+                    name="ageGroupId"
+                    items={ageGroups.map((ag) => ({
+                      value: ag.id,
+                      label: ag.name,
+                    }))}
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue placeholder="Pilih Kelas Usia" />
                     </SelectTrigger>
@@ -283,7 +363,7 @@ export function CreateStudentClient({
                       <SelectGroup>
                         <SelectLabel>Kelas Usia</SelectLabel>
                         {ageGroups.map((ag) => (
-                          <SelectItem key={ag.id} value={ag.name}>
+                          <SelectItem key={ag.id} value={ag.id}>
                             {ag.name}
                           </SelectItem>
                         ))}
@@ -296,7 +376,7 @@ export function CreateStudentClient({
                 <div>
                   <label
                     htmlFor="joinDate"
-                    className="text-[#8e988f] block mb-1"
+                    className="text-[#555555] block mb-1"
                   >
                     Tanggal Bergabung
                   </label>
@@ -319,7 +399,7 @@ export function CreateStudentClient({
               </h2>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-4">
+            <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
               {/* Formulir Pendaftaran */}
               <div className="flex justify-center items-center flex-col space-y-1">
                 <label className="text-[#555555] block mb-1">
