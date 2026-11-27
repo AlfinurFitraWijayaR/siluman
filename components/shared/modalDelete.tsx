@@ -37,8 +37,8 @@ export const ModalDelete = ({
           </h3>
           <p className="text-xs text-[#555555] mt-1.5">
             Apakah Anda yakin ingin menghapus data {entityName.toLowerCase()}{" "}
-            <strong className="text-[#171717]">{itemName}</strong>? Tindakan ini
-            tidak dapat dibatalkan.
+            <strong className="text-[#171717] capitalize">{itemName}</strong>?
+            Tindakan ini tidak dapat dibatalkan.
           </p>
         </div>
 

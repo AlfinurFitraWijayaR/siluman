@@ -140,8 +140,8 @@ export function StudentsClient({ students, ageGroups }: StudentsClientProps) {
       </div>
 
       {/* Tabel Data Siswa */}
-      <div className="bg-white/70 overflow-hidden shadow-2xs">
-        <div className="overflow-x-auto">
+      <div className="bg-white/70 overflow-hidden">
+        <div className="overflow-x-AUTO">
           <Table>
             <TableHeader>
               <TableRow>

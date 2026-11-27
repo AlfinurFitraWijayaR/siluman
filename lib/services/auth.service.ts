@@ -9,12 +9,13 @@ import {
 import { Role } from "../../generated/prisma/enums";
 
 export class AuthService {
-  // validasi kecocokan password, buat session, set cookie.
+  // login
   static async login(
     usernameInput: string,
     passwordInput: string,
     remember?: boolean,
   ) {
+    // cek user
     const user = await prisma.user.findFirst({
       where: {
         OR: [
@@ -48,9 +49,7 @@ export class AuthService {
           expiredAt,
         },
       });
-    } catch {
-      // Non-fatal
-    }
+    } catch {}
 
     const token = await signToken(
       {
@@ -71,7 +70,7 @@ export class AuthService {
     };
   }
 
-  // hapus cookie (logout)
+  // logout
   static async logout() {
     await removeAuthCookie();
   }

@@ -12,3 +12,10 @@ export {
   getNextNISAction,
   type StudentActionResult,
 } from "../controllers/student.controller";
+
+export {
+  createCoachAction,
+  updateCoachAction,
+  deleteCoachAction,
+  type CoachActionResult,
+} from "../controllers/coach.controller";

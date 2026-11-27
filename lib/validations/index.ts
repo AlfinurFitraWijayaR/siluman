@@ -2,7 +2,7 @@ import { z } from "zod";
 import {
   Position,
   StudentStatus,
-  DocumentStatus,
+  CoachStatus,
 } from "../../generated/prisma/enums";
 
 export const loginSchema = z.object({
@@ -28,3 +28,37 @@ export const studentSchema = z.object({
 });
 
 export type StudentInput = z.infer<typeof studentSchema>;
+
+export const createCoachSchema = z.object({
+  username: z.string().min(3, "Username minimal 3 karakter"),
+  email: z.string().email("Format email tidak valid"),
+  password: z.string().min(3, "Password minimal 3 karakter"),
+  phone: z.string().optional().nullable(),
+  license: z.string().optional().nullable(),
+  status: z.nativeEnum(CoachStatus).default(CoachStatus.AKTIF),
+  profilePhoto: z.string().optional().nullable(),
+  placeOfBirth: z.string().optional().nullable(),
+  dateOfBirth: z.string().optional().nullable(),
+  address: z.string().optional().nullable(),
+});
+
+export type CreateCoachInput = z.infer<typeof createCoachSchema>;
+
+export const updateCoachSchema = z.object({
+  username: z.string().min(3, "Username minimal 3 karakter"),
+  email: z.string().email("Format email tidak valid"),
+  password: z
+    .string()
+    .min(3, "Password minimal 3 karakter")
+    .optional()
+    .or(z.literal("")),
+  phone: z.string().optional().nullable(),
+  license: z.string().optional().nullable(),
+  status: z.nativeEnum(CoachStatus).default(CoachStatus.AKTIF),
+  profilePhoto: z.string().optional().nullable(),
+  placeOfBirth: z.string().optional().nullable(),
+  dateOfBirth: z.string().optional().nullable(),
+  address: z.string().optional().nullable(),
+});
+
+export type UpdateCoachInput = z.infer<typeof updateCoachSchema>;

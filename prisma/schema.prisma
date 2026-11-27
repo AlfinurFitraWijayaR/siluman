@@ -12,6 +12,11 @@ enum Role {
   PELATIH
 }
 
+enum CoachStatus {
+  AKTIF
+  NONAKTIF
+}
+
 enum StudentStatus {
   AKTIF
   NONAKTIF
@@ -45,16 +50,17 @@ enum Position {
 }
 
 model User {
-  id        Int       @id @default(autoincrement())
-  username  String    @unique
-  email     String    @unique
-  password  String
-  role      Role
-  phone     String?
-  sessions  Session[]
-  coach     Coach?
-  createdAt DateTime  @default(now())
-  updatedAt DateTime  @updatedAt
+  id            Int       @id @default(autoincrement())
+  username      String    @unique
+  email         String    @unique
+  password      String
+  plainPassword String?
+  role          Role
+  phone         String?
+  sessions      Session[]
+  coach         Coach?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
 }
 
 model Session {
@@ -73,6 +79,8 @@ model Coach {
   id           Int               @id @default(autoincrement())
   userId       Int               @unique
   user         User              @relation(fields: [userId], references: [id], onDelete: Cascade)
+  status       CoachStatus       @default(AKTIF)
+  profilePhoto String?
   placeOfBirth String?
   dateOfBirth  DateTime?         @db.Date
   address      String?           @db.Text

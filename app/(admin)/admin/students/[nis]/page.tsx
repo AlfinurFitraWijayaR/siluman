@@ -22,7 +22,6 @@ export default async function AdminStudentDetailPage({ params }: PageProps) {
 
   return (
     <div className="w-full space-y-6">
-      {/* Header */}
       <div className="space-y-1">
         <Link
           href="/admin/students"
