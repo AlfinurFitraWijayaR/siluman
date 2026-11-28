@@ -6,16 +6,16 @@ import { Camera, Eye, EyeOff } from "lucide-react";
 import { updateCoachAction } from "@/lib/actions/coaches";
 import type { CoachListItemDTO } from "@/lib/services/coach.service";
 import { CoachStatus } from "@/generated/prisma/enums";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
+import { Input } from "@/components/ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 
 interface CoachDetailClientProps {
   coach: CoachListItemDTO;

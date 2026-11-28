@@ -1,8 +1,8 @@
 import { StudentService } from "@/lib/services/student.service";
 import { MasterDataService } from "@/lib/services/master-data.service";
-import { StudentsClient } from "@/components/students/students-client";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { StudentsClient } from "@/components/admin/students/students-client";
 
 export default async function AdminStudentsPage() {
   const students = await StudentService.getStudents();

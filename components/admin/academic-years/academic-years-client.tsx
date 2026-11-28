@@ -19,14 +19,14 @@ import {
 import type { AcademicYearListItemDTO } from "@/lib/services/academic-year.service";
 import { ModalAcademicYearForm } from "./modal-academic-year-form";
 import { useRouter } from "next/navigation";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
 import { Eye, Trash2 } from "lucide-react";
 import { AcademicYearStatus } from "@/generated/prisma/enums";
 

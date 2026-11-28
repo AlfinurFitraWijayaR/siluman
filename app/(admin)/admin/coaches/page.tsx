@@ -1,7 +1,7 @@
 import { CoachService } from "@/lib/services/coach.service";
-import { CoachesClient } from "@/components/coaches/coaches-client";
 import Link from "next/link";
 import { Plus } from "lucide-react";
+import { CoachesClient } from "@/components/admin/coaches/coaches-client";
 
 export default async function AdminCoachesPage() {
   const coaches = await CoachService.getCoaches();

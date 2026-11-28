@@ -1,5 +1,5 @@
+import { AcademicYearsClient } from "@/components/admin/academic-years/academic-years-client";
 import { AcademicYearService } from "@/lib/services/academic-year.service";
-import { AcademicYearsClient } from "@/components/academic-years/academic-years-client";
 
 export default async function AdminAcademicYearsPage() {
   const academicYears = await AcademicYearService.getAcademicYears();

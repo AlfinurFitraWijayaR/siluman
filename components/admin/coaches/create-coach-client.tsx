@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { X } from "lucide-react";
 import { createCoachAction } from "@/lib/actions/coaches";
 import { CoachStatus } from "@/generated/prisma/enums";
-import { Input } from "../ui/input";
-import { Button } from "../ui/button";
+import { Button } from "@/components/ui/button";
+import { Input } from "@/components/ui/input";
 
 export function CreateCoachClient() {
   const router = useRouter();

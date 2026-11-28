@@ -1,7 +1,7 @@
 import { MasterDataService } from "@/lib/services/master-data.service";
-import { CreateStudentClient } from "@/components/students/create-student-client";
 import Link from "next/link";
 import { ArrowLeft } from "lucide-react";
+import { CreateStudentClient } from "@/components/admin/students/create-student-client";
 
 export default async function AdminCreateStudentPage() {
   const ageGroups = await MasterDataService.getAgeGroups();

@@ -3,6 +3,7 @@ import { buildAdminDashboardData } from "@/lib/dashboard/admin-dashboard";
 import { AgeGroupService } from "@/lib/services/age-group.service";
 import { CoachService } from "@/lib/services/coach.service";
 import { StudentService } from "@/lib/services/student.service";
+import { FileCheck, Hash, User, Users } from "lucide-react";
 
 export default async function AdminDashboardPage() {
   const [students, coaches, ageGroups] = await Promise.all([
@@ -15,33 +16,65 @@ export default async function AdminDashboardPage() {
     buildAdminDashboardData({ students, coaches, ageGroups });
 
   const cards = [
-    { label: "Total Siswa Aktif", value: stats.activeStudents },
-    { label: "Total Pelatih", value: stats.coaches },
-    { label: "Administrasi Siswa", value: stats.verifiedAdministration },
-    { label: "Total Kelas Usia", value: stats.ageGroups },
+    {
+      label: "Total Siswa Aktif",
+      value: stats.activeStudents,
+      unit: "siswa",
+      icon: User,
+    },
+    {
+      label: "Total Pelatih",
+      value: stats.coaches,
+      unit: "pelatih",
+      icon: Users,
+    },
+    {
+      label: "Total Berkas Lengkap",
+      value: stats.verifiedAdministration,
+      unit: ` dari ${stats.activeStudents} siswa aktif`,
+      icon: FileCheck,
+    },
+    {
+      label: "Total Kelas Usia",
+      value: stats.ageGroups,
+      unit: "kelas",
+      icon: Hash,
+    },
   ];
 
   return (
     <div className="w-full">
-      <h1 className="text-[20px] font-semibold leading-[36px] text-[#171717]">
-        Dashboard
-      </h1>
-      <p className="text-[13px] font-normal leading-[18px] text-[#555555]">
+      <h1 className="text-[20px] font-semibold text-[#171717]">Dashboard</h1>
+      <p className="text-[13px] text-[#555555]">
         Ringkasan singkat aktivitas administrator.
       </p>
 
-      <section className="mt-6 grid grid-cols-1 gap-4 sm:grid-cols-2 xl:grid-cols-4">
+      <section className="mt-4 grid grid-cols-2 gap-4 xl:grid-cols-4">
         {cards.map((card) => (
           <div
             key={card.label}
-            className="bg-white/70 rounded-xl border border-[#dedfd6]/70 shadow-xs p-4"
+            className="flex flex-col justify-between rounded-md border border-[#dedfd6]/70 bg-white/70 p-4"
           >
-            <p className="text-[13px] font-medium text-[#555555]">
-              {card.label}
-            </p>
-            <p className="mt-2 text-[24px] font-semibold leading-none text-[#172720]">
-              {card.value}
-            </p>
+            <div className="mb-4 flex h-5 w-5 items-center justify-center text-[#171717]">
+              <card.icon className="h-6 w-6" strokeWidth={1.8} />
+            </div>
+
+            <div>
+              <p className="text-[13px] font-medium text-[#171717]">
+                {card.label}
+              </p>
+
+              <div className="flex items-baseline gap-1">
+                <span className="text-[36px] font-bold leading-none tracking-tight text-[#172720]">
+                  {card.value}
+                </span>
+                {card.unit && (
+                  <span className="text-[13px] text-[#555555]">
+                    {card.unit}
+                  </span>
+                )}
+              </div>
+            </div>
           </div>
         ))}
       </section>

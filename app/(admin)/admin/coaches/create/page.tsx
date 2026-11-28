@@ -1,6 +1,6 @@
+import { CreateCoachClient } from "@/components/admin/coaches/create-coach-client";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
-import { CreateCoachClient } from "@/components/coaches/create-coach-client";
 
 export default function AdminCreateCoachPage() {
   return (

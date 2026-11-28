@@ -32,10 +32,11 @@ export function AdminDashboardCharts({
   administration,
 }: AdminDashboardChartsProps) {
   return (
-    <section className="mt-6 grid grid-cols-1 gap-4 lg:grid-cols-2">
-      <div className="bg-white/70 rounded-xl border border-[#dedfd6]/70 shadow-xs p-4">
-        <h2 className="text-[14px] font-semibold text-[#171717]">
-          Distribusi Siswa per Kelas Usia
+    <section className="mt-4 grid grid-cols-1 gap-4 lg:grid-cols-2">
+      {/* KU */}
+      <div className="bg-white/70 rounded-xl border border-[#dedfd6]/70 p-4">
+        <h2 className="text-[13px] font-semibold text-[#171717]">
+          Distribusi siswa per kelas usia
         </h2>
         <div className="h-[240px] w-full mt-4">
           <ResponsiveContainer width="100%" height="100%">
@@ -80,9 +81,10 @@ export function AdminDashboardCharts({
         </div>
       </div>
 
-      <div className="bg-white/70 rounded-xl border border-[#dedfd6]/70 shadow-xs p-4">
-        <h2 className="text-[14px] font-semibold text-[#171717]">
-          Distribusi Sebaran Administrasi
+      {/* ADM */}
+      <div className="bg-white/70 rounded-xl border border-[#dedfd6]/70 p-4">
+        <h2 className="text-[13px] font-semibold text-[#171717]">
+          Distribusi sebaran administrasi
         </h2>
         <div className="h-[240px] w-full mt-4">
           <ResponsiveContainer width="100%" height="100%">

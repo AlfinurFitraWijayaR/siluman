@@ -1,5 +1,5 @@
 import { AgeGroupService } from "@/lib/services/age-group.service";
-import { ClassesClient } from "@/components/classes/classes-client";
+import { ClassesClient } from "@/components/admin/classes/classes-client";
 
 export default async function AdminClassesPage() {
   const classes = await AgeGroupService.getAgeGroups();

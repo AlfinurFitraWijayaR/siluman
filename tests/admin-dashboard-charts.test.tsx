@@ -18,6 +18,6 @@ test("AdminDashboardCharts renders both chart titles", async () => {
     }),
   );
 
-  assert.match(html, /Distribusi Siswa per Kelas Usia/);
-  assert.match(html, /Distribusi Sebaran Administrasi/);
+  assert.match(html, /Distribusi siswa per kelas usia/);
+  assert.match(html, /Distribusi sebaran administrasi/);
 });

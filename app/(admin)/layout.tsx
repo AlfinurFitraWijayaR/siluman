@@ -16,7 +16,7 @@ async function AdminLayoutContent({ children }: { children: React.ReactNode }) {
         }}
       />
       <div className="flex-1 flex min-w-0">
-        <Sidebar role="ADMINISTRATOR" academicYear={academicYear} />
+        <Sidebar role={user.role} academicYear={academicYear} />
         <div className="flex-1 bg-[#172720] min-w-0 flex flex-col">
           <main className="flex-1 bg-[#f7f6f0] rounded-tl-[23px] shadow-sm py-4 md:py-6 px-4 md:px-8 overflow-y-auto">
             {children}

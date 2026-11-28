@@ -12,12 +12,12 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-import { Badge } from "../ui/badge";
-import { Pagination } from "../shared/pagination";
-import { ModalDelete } from "../shared/modalDelete";
-import { Button } from "../ui/button";
 import { deleteCoachAction } from "@/lib/actions/coaches";
 import type { CoachListItemDTO } from "@/lib/services/coach.service";
+import { Pagination } from "@/components/shared/pagination";
+import { ModalDelete } from "@/components/shared/modalDelete";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 
 interface CoachesClientProps {
   coaches: CoachListItemDTO[];

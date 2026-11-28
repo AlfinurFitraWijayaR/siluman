@@ -21,7 +21,7 @@ import type { AgeGroupListItemDTO } from "@/lib/services/age-group.service";
 import { AgeGroupStatus } from "@/generated/prisma/enums";
 import { ModalAgeGroupForm } from "./modal-age-group-form";
 import { useRouter } from "next/navigation";
-import { Input } from "../ui/input";
+import { Input } from "../../ui/input";
 import { Eye, Trash2 } from "lucide-react";
 
 interface ClassesClientProps {

@@ -14,11 +14,9 @@ import {
 } from "@/components/ui/table";
 import { deleteStudentAction } from "@/lib/actions/students";
 import { StudentStatus, DocumentStatus } from "@/generated/prisma/enums";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
-import { Pagination } from "../shared/pagination";
-import { ModalDelete } from "../shared/modalDelete";
-import { Input } from "../ui/input";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -27,7 +25,9 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
+} from "@/components/ui/select";
+import { ModalDelete } from "@/components/shared/modalDelete";
+import { Pagination } from "@/components/shared/pagination";
 
 export interface StudentListItem {
   nis: string;

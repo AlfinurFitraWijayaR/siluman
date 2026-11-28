@@ -1,9 +1,9 @@
 import { notFound } from "next/navigation";
 import { StudentService } from "@/lib/services/student.service";
 import { MasterDataService } from "@/lib/services/master-data.service";
-import { StudentDetailClient } from "@/components/students/student-detail-client";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
+import { StudentDetailClient } from "@/components/admin/students/student-detail-client";
 
 interface PageProps {
   params: Promise<{

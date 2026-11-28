@@ -13,7 +13,7 @@ import {
   StudentStatus,
   DocumentStatus,
 } from "@/generated/prisma/enums";
-import { Input } from "../ui/input";
+import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
@@ -22,9 +22,9 @@ import {
   SelectLabel,
   SelectTrigger,
   SelectValue,
-} from "../ui/select";
-import { Button } from "../ui/button";
-import { Badge } from "../ui/badge";
+} from "@/components/ui/select";
+import { Button } from "@/components/ui/button";
+import { Badge } from "@/components/ui/badge";
 
 export interface StudentDetailData {
   nis: string;

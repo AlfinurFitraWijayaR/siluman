@@ -1,6 +1,12 @@
 import { AcademicYearStatus } from "@/generated/prisma/enums";
 import { prisma } from "../prisma";
 
+export function resolveActiveAcademicYear(
+  active: { name: string } | null,
+): string {
+  return active?.name ?? "-";
+}
+
 export class MasterDataService {
   // ambil kelas usia yang aktif.
   static async getAgeGroups() {
@@ -23,12 +29,6 @@ export class MasterDataService {
       orderBy: { createdAt: "desc" },
     });
 
-    if (active) return active.name;
-
-    const latest = await prisma.academic.findFirst({
-      orderBy: { createdAt: "desc" },
-    });
-
-    return latest?.name || "2025/2026";
+    return resolveActiveAcademicYear(active);
   }
 }

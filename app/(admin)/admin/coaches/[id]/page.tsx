@@ -2,7 +2,7 @@ import { notFound } from "next/navigation";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";
 import { CoachService } from "@/lib/services";
-import { CoachDetailClient } from "@/components/coaches/coach-detail-client";
+import { CoachDetailClient } from "@/components/admin/coaches/coach-detail-client";
 
 interface PageProps {
   params: Promise<{
