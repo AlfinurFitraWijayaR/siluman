@@ -19,3 +19,18 @@ export {
   deleteCoachAction,
   type CoachActionResult,
 } from "../controllers/coach.controller";
+
+export {
+  createAgeGroupAction,
+  updateAgeGroupAction,
+  deleteAgeGroupAction,
+  type AgeGroupActionResult,
+} from "../controllers/age-group.controller";
+
+export {
+  createAcademicYearAction,
+  updateAcademicYearAction,
+  deleteAcademicYearAction,
+  type AcademicYearActionResult,
+} from "../controllers/academic-year.controller";
+

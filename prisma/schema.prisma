@@ -32,6 +32,11 @@ enum AgeGroupStatus {
   NONAKTIF
 }
 
+enum AcademicYearStatus {
+  AKTIF
+  NONAKTIF
+}
+
 enum AttendanceStatus {
   HADIR
   ALPA
@@ -143,15 +148,15 @@ model AgeGroup {
 }
 
 model Academic {
-  id               Int               @id @default(autoincrement())
+  id               Int                @id @default(autoincrement())
   name             String
-  periodeStart     DateTime          @db.Date
-  periodeEnd       DateTime          @db.Date
-  isActive         Boolean           @default(false)
+  periodeStart     DateTime           @db.Date
+  periodeEnd       DateTime           @db.Date
+  isActive         AcademicYearStatus @default(NONAKTIF)
   trainingSessions TrainingSession[]
   reportCards      ReportCard[]
-  createdAt        DateTime          @default(now())
-  updatedAt        DateTime          @updatedAt
+  createdAt        DateTime           @default(now())
+  updatedAt        DateTime           @updatedAt
 }
 
 model TrainingSession {

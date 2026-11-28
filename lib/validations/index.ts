@@ -3,6 +3,8 @@ import {
   Position,
   StudentStatus,
   CoachStatus,
+  AgeGroupStatus,
+  AcademicYearStatus,
 } from "../../generated/prisma/enums";
 
 export const loginSchema = z.object({
@@ -63,3 +65,33 @@ export const updateCoachSchema = z.object({
 });
 
 export type UpdateCoachInput = z.infer<typeof updateCoachSchema>;
+
+export const ageGroupSchema = z.object({
+  name: z.string().min(1, "Nama kelas usia wajib diisi"),
+  status: z.nativeEnum(AgeGroupStatus).default(AgeGroupStatus.AKTIF),
+  notes: z.string().optional().nullable(),
+});
+
+export type AgeGroupInput = z.infer<typeof ageGroupSchema>;
+
+export const academicYearSchema = z
+  .object({
+    name: z.string().min(1, "Nama tahun akademik wajib diisi"),
+    periodeStart: z.string().min(1, "Tanggal mulai wajib diisi"),
+    periodeEnd: z.string().min(1, "Tanggal akhir wajib diisi"),
+    isActive: z
+      .nativeEnum(AcademicYearStatus)
+      .default(AcademicYearStatus.NONAKTIF),
+  })
+  .refine(
+    (data) => {
+      if (!data.periodeStart || !data.periodeEnd) return true;
+      return new Date(data.periodeEnd) >= new Date(data.periodeStart);
+    },
+    {
+      message: "Tanggal akhir harus setelah atau sama dengan tanggal mulai",
+      path: ["periodeEnd"],
+    },
+  );
+
+export type AcademicYearInput = z.infer<typeof academicYearSchema>;

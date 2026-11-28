@@ -1,3 +1,4 @@
+import { AcademicYearStatus } from "@/generated/prisma/enums";
 import { prisma } from "../prisma";
 
 export class MasterDataService {
@@ -18,7 +19,7 @@ export class MasterDataService {
   // ambil tahun akademik yang aktif
   static async getActiveAcademicYear(): Promise<string> {
     const active = await prisma.academic.findFirst({
-      where: { isActive: true },
+      where: { isActive: AcademicYearStatus.AKTIF },
       orderBy: { createdAt: "desc" },
     });
 
